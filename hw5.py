@@ -100,8 +100,21 @@ pred = lr.predict(x)
 print('height = %.2f * weight + %.2f' %(lr.coef_, lr.intercept_))
 
 
-print('r2 = %.2f' %r2(y, pred))
+# 3.b) predict height of individual whose weight is 60 kg
+print('predicted height when weight is 60kg: %.2f\n'
+      %((lr.coef_ * 60) + lr.intercept_))
+
+# 3.c) Calculate MSE and R2
 print('mse = %.2f' %mse(y, pred))
+print('r2 = %.2f' %r2(y, pred))
+
+# 3.d) 
+lr = linear_model.LinearRegression()
+x = pd.DataFrame(frame2.weight)
+c = pd.DataFrame(frame2.male)
+y = frame2.height
+
+lr.fit(x, c, y)
 
 
 # print(frame.iloc[:5, 1:])
