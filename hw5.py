@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 from numpy import nan as NaN  
 
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error as mse
+from sklearn.metrics import r2_score as r2
+
 # Import data from hw5q1.xlsx
 #frame = pd.read_excel('./hw5q1.xlsx')
 #
@@ -85,7 +89,20 @@ print("Print Rows 2001 - 2010 (inclusive, drop rows w/ NULL entries):\n",
       frame2_wNull[2001: 2011].dropna(), "\n")
 
 # 3.a) 
-print("lol")
+lr = linear_model.LinearRegression()
+x = pd.DataFrame(frame2.weight)
+y = frame2.height
+
+lr.fit(x, y)
+pred = lr.predict(x)
+
+# lr.coef_ = beta, lr.intercept = alpha
+print('height = %.2f * weight + %.2f' %(lr.coef_, lr.intercept_))
+
+
+print('r2 = %.2f' %r2(y, pred))
+print('mse = %.2f' %mse(y, pred))
+
 
 # print(frame.iloc[:5, 1:])
 # list2 = [print(ele) for ele in frame.a if 4 > ele > 2]
