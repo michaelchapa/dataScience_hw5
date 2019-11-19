@@ -1,33 +1,38 @@
 from pandas import Series, DataFrame
 import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
 from numpy import nan as NaN  
 
-from sklearn import linear_model
+from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error as mse
 from sklearn.metrics import r2_score as r2
 
 # Import data from hw5q1.xlsx
-#frame = pd.read_excel('./hw5q1.xlsx')
-#
-## 1.a) boxplot data
-#frame.boxplot()
-#
-## 1.b) 
-#frame.applymap(lambda x: np.log2(x)).boxplot()
-#
-## 1.c)
-#print(frame.describe(), "\n")
-#
-## 1.d)
-#frame.hist(density = True)
-#
-## 1.e)
-#frame.applymap(lambda x: np.log(x)).hist(density = True)
-#
-## 1.f)
-#print("A: Normal Distribution\nB: Log Distribution\n" +
-#      "C: Normal Distribution (Right-skewed)\nD: Log Distribution (Pareto)\n")
+frame = pd.read_excel('./hw5q1.xlsx')
+
+# 1.a) boxplot data
+frame.boxplot()
+plt.show()
+
+# 1.b) 
+frame.applymap(lambda x: np.log2(x)).boxplot()
+plt.show()
+
+# 1.c)
+print(frame.describe(), "\n")
+
+# 1.d)
+frame.hist(density = True)
+plt.show()
+
+# 1.e)
+frame.applymap(lambda x: np.log(x)).hist(density = True)
+plt.show()
+
+# 1.f)
+print("A: Normal Distribution\n" +
+      "C: Log Normal Distribution\n")
 
 
 # 2.a) Import data from brfss.csv
@@ -101,27 +106,19 @@ print('height = %.2f * weight + %.2f' %(lr.coef_, lr.intercept_))
 
 
 # 3.b) predict height of individual whose weight is 60 kg
-print('predicted height when weight is 60kg: %.2f\n'
-      %((lr.coef_ * 60) + lr.intercept_))
-
+print('predicted height when weight is 60kg: %.2f\n' %(lr.predict(60)))
+      
 # 3.c) Calculate MSE and R2
 print('mse = %.2f' %mse(y, pred))
-print('r2 = %.2f' %r2(y, pred))
+print('r2 = %.2f\n' %r2(y, pred))
 
 # 3.d) 
-lr = linear_model.LinearRegression()
-x = pd.DataFrame(frame2.weight)
-c = pd.DataFrame(frame2.male)
 y = frame2.height
+x = frame2[['weight','male']]
+lr = linear_model.LinearRegression()
+lr.fit(x, y)
 
-lr.fit(x, c, y)
+print(lr.coef_)
 
-
-# print(frame.iloc[:5, 1:])
-# list2 = [print(ele) for ele in frame.a if 4 > ele > 2]
-# print(list2)
-# print(frame.cumsum())
-# print(frame.sum())
-# print(frame.describe())
-# print(frame.corr())
-
+#coef = Series(lr.coef_, index = list(frame2.columns))
+# print(coef)
